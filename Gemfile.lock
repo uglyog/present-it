@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bootstrap-sass (2.3.1.2)
+      sass (~> 3.2)
     chunky_png (1.2.8)
     coffee-script (2.2.0)
       coffee-script-source
@@ -10,8 +12,6 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
-    compass-rails (1.0.3)
-      compass (>= 0.12.2, < 0.14)
     daemons (1.1.9)
     eventmachine (1.0.3)
     execjs (1.4.0)
@@ -43,8 +43,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-sass
   coffee-script
-  compass-rails
+  compass
   haml
   rack
   sass
