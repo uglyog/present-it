@@ -1,8 +1,19 @@
 !!!
-%html
+%html(ng-app)
   %head
-    %script(src='/assets/controller.js')
     %style(src='/assets/bootstrap.css')
-    %style(src='/assets/controller.css')
-  %body
-    Controller
+    %link(href='/assets/bootstrap.css' rel='stylesheet')
+    %link(href='/assets/controller.css' rel='stylesheet')
+    %script(type="text/javascript" src='/assets/controller/controller.js')
+  %body(ng-controller="MainController")
+    .container-fluid
+      .navbar
+        .navbar-inner
+          %a.brand(href="#") Present-It Controller
+          %form.navbar-form.pull-left(ng-controller="ConnectFormController")
+            %input.input-xlarge(type='text' placeholder='Presentation Channel Address' ng-model="channelAddress" ng-class="{disabled:connecting}" ng-disabled="connecting")
+            %button.btn(ng-class="{disabled:!channelAddress.length || connecting}" ng-click="connectChannel()" ng-disabled="!channelAddress.length || connecting")
+              {{connectDescription}}
+      .alerts.row-fluid
+      .row-fluid
+        Controller

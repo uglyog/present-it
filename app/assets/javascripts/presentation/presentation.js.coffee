@@ -1,6 +1,7 @@
 #= require angular
 #= require jquery
 #= require bootstrap
+#= require ../channel
 #= require_tree .
 
 #ws = new WebSocket("ws://192.168.0.6:8080")
