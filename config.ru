@@ -6,7 +6,7 @@ require 'compass'
 require 'sprockets-sass'
 require 'coffee-script'
 
-map '/' do
+map '/assets/' do
   environment = Sprockets::Environment.new
   environment.append_path 'vendor/assets/javascripts'
   environment.append_path 'vendor/assets/stylesheets'
@@ -19,4 +19,8 @@ map '/' do
   environment.register_engine '.haml', Tilt::HamlTemplate
 
   run environment
+end
+
+map '/' do
+  run Rack::Directory.new("public")
 end
