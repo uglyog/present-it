@@ -24,7 +24,12 @@ EM.run do
 
       match = msg.match /(\w*): (.*)/
       if match
-        connections[match[1]].send(match[2])
+        connection = connections[match[1]]
+        if connection.nil?
+          ws.send("Sorry: #{match[1]} not connected")
+        else
+          connections[match[1]].send(match[2])
+        end
       end
     end
     ws.onclose do

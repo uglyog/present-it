@@ -6,8 +6,11 @@
 
 class Controller
 
-  connectToPresentation: (channelAddress, $q) ->
+  connectToPresentation: (channelAddress) ->
     @channel = new Channel(channelAddress, 'Controller')
-    @channel.sayHi()
+    @channel.sayHi().done =>
+      @channel.requestPresentationInfo()
+
+  disconnect: -> @channel.disconnect()
 
 @Controller = Controller
