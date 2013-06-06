@@ -12,8 +12,20 @@
           %a.brand(href="#") Present-It Controller
           %form.navbar-form.pull-left(ng-controller="ConnectFormController")
             %input.input-xlarge(type='text' placeholder='Presentation Channel Address' ng-model="channelAddress" ng-class="{disabled:connecting}" ng-disabled="connecting")
-            %button.btn(ng-class="{disabled:!channelAddress.length || connecting}" ng-click="connectChannel()" ng-disabled="!channelAddress.length || connecting")
+            %button.btn(ng-click="connectChannel()" ng-disabled="!channelAddress.length || connecting")
               {{connectDescription}}
       .alerts.row-fluid
-      .row-fluid
-        Controller
+      .row-fluid(ng-show="connected")
+        %button.btn(ng-click="requestInfo()") Update Presentation Info
+      .row-fluid(ng-show="controller.presentationInfo.presentationReady")
+        %h3 Presentation Info
+        %dl
+          %dt Number of Pages
+          %dd {{controller.presentationInfo.pages}}
+          %dt Current Page
+          %dd {{controller.presentationInfo.currentPage}}
+        .start(ng-hide="controller.presentationInfo.currentPage")
+          %button.btn(ng-click="startPresentation()") Start Presentation
+        .controls(ng-show="controller.presentationInfo.currentPage")
+          %button.btn(ng-click="backSlide()") << Back
+          %button.btn(ng-click="forwardSlide()") Forward >>

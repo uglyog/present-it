@@ -1,5 +1,5 @@
 class Channel
-  constructor: (@channelAddress, @identifier) ->
+  constructor: (@channelAddress, @identifier, @owner) ->
 
   sayHi: ->
     deferred = new $.Deferred()
@@ -15,8 +15,8 @@ class Channel
       @handleMessage(message)
     deferred.promise()
 
-  requestPresentationInfo: ->
-    @ws.send("Presentation: Info Please")
+  send: (message) ->
+    @ws.send(message)
 
   disconnect: ->
     @ws.close()
@@ -25,7 +25,10 @@ class Channel
   handleMessage: (message) ->
     console.log message
     error = message.data.match /^Sorry: (.*)/
-    @displayError(error[1]) if error?
+    if error?
+      @displayError(error[1])
+    else
+      @owner.handleMessage(message.data.toString())
 
   displayError: (error) ->
     $('.alerts').append(

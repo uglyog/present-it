@@ -15,6 +15,8 @@
 class Presentation
   constructor: (@channelAddress, @presentationUrl, @http) ->
     @pages = 0
+    @channel = new Channel(@channelAddress, 'Presentation', @)
+    @channel.sayHi()
 
   initPresentation: ->
     @lookupPage(1)
@@ -28,6 +30,12 @@ class Presentation
       .success(=> @pageFound(pageNumber)).error(=> @finalisePageCount())
 
   finalisePageCount: ->
+    @presentationReady = true
+
+  handleMessage: (message) ->
+    switch message
+      when 'Info Please'
+        @channel.send('Controller: Here is your JSON ' + JSON.stringify(pages: @pages, currentPage: @currentPage, presentationReady: @presentationReady))
 
 
 @Presentation = Presentation
