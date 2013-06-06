@@ -27,5 +27,5 @@
         .start(ng-hide="controller.presentationInfo.currentPage")
           %button.btn(ng-click="startPresentation()") Start Presentation
         .controls(ng-show="controller.presentationInfo.currentPage")
-          %button.btn(ng-click="backSlide()") << Back
-          %button.btn(ng-click="forwardSlide()") Forward >>
+          %button.btn(ng-click="backSlide()" ng-disabled="controller.presentationInfo.currentPage == 1") << Back
+          %button.btn(ng-click="forwardSlide()" ng-disabled="controller.presentationInfo.currentPage == controller.presentationInfo.pages") Forward >>
