@@ -19,6 +19,9 @@ class Controller
     @presentationInfo = null
 
   requestPresentationInfo: -> @channel.send("Presentation: Info Please")
+  startPresentation: -> @channel.send("Presentation: You may start")
+  backSlide: -> @channel.send("Presentation: Go back 1 slide")
+  forwardSlide: -> @channel.send("Presentation: Go forward 1 slide")
 
   handleMessage: (message) ->
     jsonPrefix = 'Here is your JSON '
