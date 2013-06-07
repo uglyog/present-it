@@ -1,11 +1,14 @@
 #= require angular
 #= require jquery
 #= require bootstrap
+#= require underscore
+#= require underscore.string
+#= require haml
 #= require ../channel
 #= require_tree .
 
 class Presentation
-  constructor: (@channelAddress, @presentationUrl, @http) ->
+  constructor: (@channelAddress, @presentationUrl, @fileExt, @http) ->
     @pages = 0
     @channel = new Channel(@channelAddress, 'Presentation', @)
     @channel.sayHi()
@@ -17,15 +20,15 @@ class Presentation
     @lookupPage(pageNumber + 1)
 
   lookupPage: (pageNumber) ->
-    @http.head(@presentationUrl + 'slide-' + pageNumber + '.html')
+    @http.head(@presentationUrl + 'slide-' + pageNumber + @fileExt)
       .success(=> @pageFound(pageNumber))
       .error(=> @finalisePageCount())
 
   loadPage: (pageNumber) ->
-    @http.get(@presentationUrl + 'slide-' + pageNumber + '.html')
+    @http.get(@presentationUrl + 'slide-' + pageNumber + @fileExt)
       .success((page) =>
         @currentPage = pageNumber
-        @displayPage(page)
+        @displayPage(haml.compileHaml(source: page)())
       )
 
   finalisePageCount: -> @presentationReady = true
@@ -40,9 +43,15 @@ class Presentation
         .error (error) =>
           @channel.send('Controller: Sorry: ' + error)
       when 'Go back 1 slide'
-        @updateController()
+        @loadPage(@currentPage - 1).success =>
+          @updateController()
+        .error (error) =>
+          @channel.send('Controller: Sorry: ' + error)
       when 'Go forward 1 slide'
-        @updateController()
+        @loadPage(@currentPage + 1).success =>
+          @updateController()
+        .error (error) =>
+          @channel.send('Controller: Sorry: ' + error)
 
   updateController: ->
     @channel.send('Controller: Here is your JSON ' +
