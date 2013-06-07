@@ -9,3 +9,4 @@
   $scope.startPresentation = -> $scope.controller.startPresentation()
   $scope.backSlide = -> $scope.controller.backSlide()
   $scope.forwardSlide = -> $scope.controller.forwardSlide()
+  $scope.gotoSlide = -> $scope.controller.gotoSlide($scope.jumpToPage)

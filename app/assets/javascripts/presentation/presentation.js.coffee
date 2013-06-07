@@ -52,6 +52,13 @@ class Presentation
           @updateController()
         .error (error) =>
           @channel.send('Controller: Sorry: ' + error)
+      else
+        match = /Goto ([0-9]+) slide/.exec(message)
+        if match
+          @loadPage(parseInt(match[1])).success =>
+              @updateController()
+            .error (error) =>
+              @channel.send('Controller: Sorry: ' + error)
 
   updateController: ->
     @channel.send('Controller: Here is your JSON ' +

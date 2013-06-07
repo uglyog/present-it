@@ -16,7 +16,7 @@
               {{connectDescription}}
       .alerts.row-fluid
       .row-fluid(ng-show="connected")
-        %button.btn(ng-click="requestInfo()") Update Presentation Info
+        %button.btn.btn-large(ng-click="requestInfo()") Update Presentation Info
       .row-fluid(ng-show="controller.presentationInfo.presentationReady")
         %h3 Presentation Info
         %dl
@@ -25,7 +25,12 @@
           %dt Current Page
           %dd {{controller.presentationInfo.currentPage}}
         .start(ng-hide="controller.presentationInfo.currentPage")
-          %button.btn(ng-click="startPresentation()") Start Presentation
+          %button.btn.btn-large(ng-click="startPresentation()") Start Presentation
         .controls(ng-show="controller.presentationInfo.currentPage")
-          %button.btn(ng-click="backSlide()" ng-disabled="controller.presentationInfo.currentPage == 1") << Back
-          %button.btn(ng-click="forwardSlide()" ng-disabled="controller.presentationInfo.currentPage == controller.presentationInfo.pages") Forward >>
+          %button.btn.btn-large(ng-click="backSlide()" ng-disabled="controller.presentationInfo.currentPage == 1") << Back
+          %button.btn.btn-large.btn-primary(ng-click="forwardSlide()" ng-disabled="controller.presentationInfo.currentPage == controller.presentationInfo.pages") Forward >>
+          %br
+          %br
+          %form.form-inline
+            %input(type="text" placeholder="Goto Slide" ng-model="jumpToPage")
+            %button.btn(ng-click="gotoSlide()") Jump!
