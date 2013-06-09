@@ -1,2 +1,9 @@
+%h1 Recorded Interaction Tests
 .contents
-  .heading And as a result ...
+  %div
+    %ul
+      %li These are tests that play back recorded responses from a producer
+      %li For XML and SOAP interfaces, we used VCR gem
+      %li For out HTML web services, we use a utility that stubs the web service and records the expectations (Pact)
+        %ul
+          %li These are played back as the consumer test
