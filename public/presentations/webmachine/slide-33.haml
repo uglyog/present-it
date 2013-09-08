@@ -2,38 +2,35 @@
 .contents
   %div
     Webmachine Resource
-    %pre(class="brush: ruby")
-      :preserve
+    %pre
+      :escape
         def options
-         {
-            'Access-Control-Allow-Methods' => 'POST, OPTIONS',
-            'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type'
-         }
+          {
+          'Access-Control-Allow-Methods' => 'POST, OPTIONS',
+          'Access-Control-Allow-Headers' => 'X-Requested-With, Content-Type'
+        }
         end
 
-        def finish_request
-          response.headers['Access-Control-Allow-Origin'] = '*'
-        end
+      def finish_request
+        response.headers['Access-Control-Allow-Origin'] = '*'
+      end
 
-        def allowed_methods
-          ['GET', 'HEAD', 'POST', 'OPTIONS']
-        end
+      def allowed_methods
+        ['GET', 'HEAD', 'POST', 'OPTIONS']
+      end
 
-        def malformed_request?
-          puts "malformed_request?"
-          body = request.body.to_s
-          if body.nil?
-            false
-          else
-            begin
-              contract_attributes = JSON.parse(request.body.to_s)['contract']
-              @contract = ContractFactory.contract_from contract_attributes
-              !@contract.valid?
-            rescue => e
-              true
-            end
-        end
-
-.scripts
-  :javascript
-    SyntaxHighlighter.all()
+      def malformed_request?
+        puts "malformed_request?"
+        body = request.body.to_s
+        if body.nil?
+          false
+        else
+          begin
+            contract_attributes = JSON.parse(request.body.to_s)['contract']
+            @contract = ContractFactory.contract_from contract_attributes
+            !@contract.valid?
+          rescue => e
+            true
+          end
+      end
+    %div
