@@ -23,6 +23,7 @@ class Controller
   backSlide: -> @channel.send("Presentation: Go back 1 slide")
   forwardSlide: -> @channel.send("Presentation: Go forward 1 slide")
   gotoSlide: (slide) -> @channel.send("Presentation: Goto #{slide} slide")
+  selectPresentation: -> @channel.send("Presentation: Select #{@presentationInfo.selectedPresentation.trim()}")
 
   handleMessage: (message) ->
     jsonPrefix = 'Here is your JSON '

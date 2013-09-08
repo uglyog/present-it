@@ -10,3 +10,6 @@
   $scope.backSlide = -> $scope.controller.backSlide()
   $scope.forwardSlide = -> $scope.controller.forwardSlide()
   $scope.gotoSlide = -> $scope.controller.gotoSlide($scope.jumpToPage)
+
+  $scope.$watch 'controller.presentationInfo.selectedPresentation', (value) -> $scope.controller.selectPresentation() if value?
+

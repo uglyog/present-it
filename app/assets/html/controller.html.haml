@@ -17,6 +17,10 @@
       .alerts.row-fluid
       .row-fluid(ng-show="connected")
         %button.btn.btn-large(ng-click="requestInfo()") Update Presentation Info
+      .row-fluid(ng-show="controller.presentationInfo.presentations")
+        %h3 Available Presentations
+        %select(name="presentation-list" ng-model="controller.presentationInfo.selectedPresentation")
+          %option(ng-repeat='presentation in controller.presentationInfo.presentations')<> {{presentation}}
       .row-fluid(ng-show="controller.presentationInfo.presentationReady")
         %h3 Presentation Info
         %dl

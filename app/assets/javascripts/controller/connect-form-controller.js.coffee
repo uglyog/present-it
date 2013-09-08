@@ -1,5 +1,5 @@
-@ConnectFormController = ($scope) ->
-  $scope.channelAddress ?= ''
+@ConnectFormController = ($scope, $location) ->
+  $scope.channelAddress ?= $location.host() + ':8080'
   $scope.connectDescription = 'Connect'
 
   $scope.connectChannel = ->

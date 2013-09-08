@@ -13,25 +13,33 @@ class Presentation
     @channel = new Channel(@channelAddress, 'Presentation', @)
     @channel.sayHi()
 
-  initPresentation: -> @lookupPage(1)
+  initPresentation: -> @lookupPresentations()
 
   pageFound: (pageNumber) ->
     @pages = pageNumber
     @lookupPage(pageNumber + 1)
 
   lookupPage: (pageNumber) ->
-    @http.head(@presentationUrl + 'slide-' + pageNumber + @fileExt)
+    @http.head(@presentationUrl + @selectedPresentation + 'slide-' + pageNumber + @fileExt)
       .success(=> @pageFound(pageNumber))
       .error(=> @finalisePageCount())
 
   loadPage: (pageNumber) ->
-    @http.get(@presentationUrl + 'slide-' + pageNumber + @fileExt)
+    @http.get(@presentationUrl + @selectedPresentation + 'slide-' + pageNumber + @fileExt)
       .success((page) =>
         @currentPage = pageNumber
         @displayPage(haml.compileHaml(source: page)())
       )
 
-  finalisePageCount: -> @presentationReady = true
+  lookupPresentations: ->
+    @http.get(@presentationUrl)
+      .success((index) =>
+        @parseIndexPage(index)
+      )
+
+  finalisePageCount: ->
+    @presentationReady = true
+    @updateController()
 
   handleMessage: (message) ->
     switch message
@@ -53,18 +61,35 @@ class Presentation
         .error (error) =>
           @channel.send('Controller: Sorry: ' + error)
       else
-        match = /Goto ([0-9]+) slide/.exec(message)
+        match = /^Select ([a-zA-Z0-9\-\/]+)/.exec(message)
         if match
-          @loadPage(parseInt(match[1])).success =>
-              @updateController()
-            .error (error) =>
-              @channel.send('Controller: Sorry: ' + error)
+          @selectedPresentation = match[1]
+          @lookupPage(1)
+        else
+          match = /Goto ([0-9]+) slide/.exec(message)
+          if match
+            @loadPage(parseInt(match[1])).success =>
+                @updateController()
+              .error (error) =>
+                @channel.send('Controller: Sorry: ' + error)
 
   updateController: ->
     @channel.send('Controller: Here is your JSON ' +
-      JSON.stringify(pages: @pages, currentPage: @currentPage, presentationReady: @presentationReady))
+      JSON.stringify
+        presentations: @presentations
+        selectedPresentation: @selectedPresentation
+        pages: @pages
+        currentPage: @currentPage
+        presentationReady: @presentationReady
+    )
 
   displayPage: (page) ->
     $('.slide').html(page)
+
+  parseIndexPage: (index) ->
+    @presentations = []
+    $(index).find('td.name a').each (index, link) =>
+      text = $(link).text().trim()
+      @presentations.push(text) unless text == 'Parent Directory'
 
 @Presentation = Presentation
