@@ -63,6 +63,7 @@ class Presentation
       else
         match = /^Select ([a-zA-Z0-9\-\/]+)/.exec(message)
         if match
+          @clearPresentationInfo()
           @selectedPresentation = match[1]
           @lookupPage(1)
         else
@@ -91,5 +92,10 @@ class Presentation
     $(index).find('td.name a').each (index, link) =>
       text = $(link).text().trim()
       @presentations.push(text) unless text == 'Parent Directory'
+
+  clearPresentationInfo: ->
+    @pages = 0
+    @presentationReady = false
+    @currentPage = null
 
 @Presentation = Presentation
